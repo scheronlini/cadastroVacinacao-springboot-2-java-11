@@ -1,6 +1,7 @@
 package com.sfauser.cadastroVacinacao.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 
 @Entity
 public class Vacina implements Serializable {
@@ -19,7 +23,10 @@ public class Vacina implements Serializable {
 	
 	private String nomeVacina;
 	private String email;
-	private String dataVacina;
+	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", timezone = "GMT")
+	private Date dataVacina;
+	
 	
 	@ManyToOne
 	@JoinColumn(name = "paciente_id")
@@ -28,7 +35,7 @@ public class Vacina implements Serializable {
 	public Vacina() {
 	}
 
-	public Vacina(Long id, String nomeVacina, String email, String dataVacina, Usuario paciente) {
+	public Vacina(Long id, String nomeVacina, String email, Date dataVacina, Usuario paciente) {
 		super();
 		this.id = id;
 		this.nomeVacina = nomeVacina;
@@ -61,11 +68,11 @@ public class Vacina implements Serializable {
 		this.email = email;
 	}
 
-	public String getDataVacina() {
+	public Date getDataVacina() {
 		return dataVacina;
 	}
 
-	public void setDataVacina(String dataVacina) {
+	public void setDataVacina(Date dataVacina) {
 		this.dataVacina = dataVacina;
 	}
 

@@ -2,6 +2,7 @@ package com.sfauser.cadastroVacinacao.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -9,6 +10,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Usuario implements Serializable{
@@ -21,15 +25,18 @@ public class Usuario implements Serializable{
 	private String nome;
 	private String email;
 	private String cpf;
-	private String dataNascimento;
 	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", timezone = "GMT")
+	private Date dataNascimento;
+	
+	@JsonIgnore
 	@OneToMany(mappedBy = "paciente")
 	private List<Vacina> vacinas = new ArrayList<>();
 	
 	public Usuario() {
 	}
 	
-	public Usuario(Long id, String nome, String email, String cpf, String dataNascimento) {
+	public Usuario(Long id, String nome, String email, String cpf, Date dataNascimento) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -66,11 +73,11 @@ public class Usuario implements Serializable{
 		this.cpf = cpf;
 	}
 
-	public String getDataNascimento() {
+	public Date getDataNascimento() {
 		return dataNascimento;
 	}
 
-	public void setDataNascimento(String dataNascimento) {
+	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
 	
