@@ -3,6 +3,8 @@ package com.sfauser.cadastroVacinacao.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -37,16 +39,19 @@ public class UsuarioService {
 			repository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
 			throw new ResourceNotFoundException(id);
-		}	catch (DataIntegrityViolationException e) {
+		} catch (DataIntegrityViolationException e) {
 			throw new DatabaseException(e.getMessage());
 		}
-		
 	}
 
 	public Usuario update(Long id, Usuario userObj) {
-		Usuario databaseObj = repository.getOne(id);
-		updateData(databaseObj, userObj);
-		return repository.save(databaseObj);
+		try {
+			Usuario databaseObj = repository.getOne(id);
+			updateData(databaseObj, userObj);
+			return repository.save(databaseObj);
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		}
 	}
 
 	private void updateData(Usuario databaseObj, Usuario userObj) {
