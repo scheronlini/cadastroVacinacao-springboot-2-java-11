@@ -1,7 +1,6 @@
 package com.sfauser.cadastroVacinacao.entities;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,12 +18,12 @@ public class Usuario implements Serializable{
 	private String nome;
 	private String email;
 	private String cpf;
-	private Date dataNascimento;
+	private String dataNascimento;
 	
 	public Usuario() {
 	}
 	
-	public Usuario(Long id, String nome, String email, String cpf, Date dataNascimento) {
+	public Usuario(Long id, String nome, String email, String cpf, String dataNascimento) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -61,11 +60,11 @@ public class Usuario implements Serializable{
 		this.cpf = cpf;
 	}
 
-	public Date getDataNascimento() {
+	public String getDataNascimento() {
 		return dataNascimento;
 	}
 
-	public void setDataNascimento(Date dataNascimento) {
+	public void setDataNascimento(String dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
 
