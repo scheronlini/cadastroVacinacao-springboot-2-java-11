@@ -31,4 +31,26 @@ public class UsuarioService {
 	public void delete(Long id) {
 		repository.deleteById(id);
 	}
+	
+	public Usuario update(Long id, Usuario userObj) {
+		Usuario databaseObj = repository.getOne(id);
+		updateData(databaseObj, userObj);
+		return repository.save(databaseObj);
+	}
+
+	private void updateData(Usuario databaseObj, Usuario userObj) {
+		
+		if (userObj.getNome() != null) {
+			databaseObj.setNome(userObj.getNome());
+		}
+		if (userObj.getEmail() != null) {
+			databaseObj.setEmail(userObj.getEmail());
+		}
+		if (userObj.getCpf() != null) {
+			databaseObj.setCpf(userObj.getCpf());
+		}
+		if (userObj.getDataNascimento() != null) {
+			databaseObj.setDataNascimento(userObj.getDataNascimento());
+		}
+	}
 }
