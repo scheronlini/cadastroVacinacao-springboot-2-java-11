@@ -1,53 +1,56 @@
 package com.sfauser.cadastroVacinacao.entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
-public class Usuario implements Serializable{
+public class Vacina implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	private String nome;
+	private String nomeVacina;
 	private String email;
-	private String cpf;
-	private String dataNascimento;
+	private String dataVacina;
 	
-	@OneToMany(mappedBy = "paciente")
-	private List<Vacina> vacinas = new ArrayList<>();
+	@ManyToOne
+	@JoinColumn(name = "paciente_id")
+	private Usuario paciente;
 	
-	public Usuario() {
+	public Vacina() {
 	}
-	
-	public Usuario(Long id, String nome, String email, String cpf, String dataNascimento) {
+
+	public Vacina(Long id, String nomeVacina, String email, String dataVacina, Usuario paciente) {
 		super();
 		this.id = id;
-		this.nome = nome;
+		this.nomeVacina = nomeVacina;
 		this.email = email;
-		this.cpf = cpf;
-		this.dataNascimento = dataNascimento;
+		this.dataVacina = dataVacina;
+		this.paciente = paciente;
 	}
 
 	public Long getId() {
 		return id;
 	}
 
-	public String getNome() {
-		return nome;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public String getNomeVacina() {
+		return nomeVacina;
+	}
+
+	public void setNomeVacina(String nomeVacina) {
+		this.nomeVacina = nomeVacina;
 	}
 
 	public String getEmail() {
@@ -58,32 +61,28 @@ public class Usuario implements Serializable{
 		this.email = email;
 	}
 
-	public String getCpf() {
-		return cpf;
+	public String getDataVacina() {
+		return dataVacina;
 	}
 
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
+	public void setDataVacina(String dataVacina) {
+		this.dataVacina = dataVacina;
 	}
 
-	public String getDataNascimento() {
-		return dataNascimento;
+	public Usuario getPaciente() {
+		return paciente;
 	}
 
-	public void setDataNascimento(String dataNascimento) {
-		this.dataNascimento = dataNascimento;
-	}
-	
-	public List<Vacina> getVacinas() {
-		return vacinas;
+	public void setPaciente(Usuario paciente) {
+		this.paciente = paciente;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((cpf == null) ? 0 : cpf.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 
@@ -95,16 +94,16 @@ public class Usuario implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Usuario other = (Usuario) obj;
-		if (cpf == null) {
-			if (other.cpf != null)
-				return false;
-		} else if (!cpf.equals(other.cpf))
-			return false;
+		Vacina other = (Vacina) obj;
 		if (email == null) {
 			if (other.email != null)
 				return false;
 		} else if (!email.equals(other.email))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
 			return false;
 		return true;
 	}
