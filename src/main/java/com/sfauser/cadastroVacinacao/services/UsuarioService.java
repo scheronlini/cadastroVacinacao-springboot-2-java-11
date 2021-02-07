@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.sfauser.cadastroVacinacao.entities.Usuario;
 import com.sfauser.cadastroVacinacao.repositories.UsuarioRepository;
+import com.sfauser.cadastroVacinacao.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class UsuarioService {
@@ -21,7 +22,7 @@ public class UsuarioService {
 	
 	public Usuario FindById(Long id) {
 		Optional<Usuario> obj = repository.findById(id);
-		return obj.get();
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
 	public Usuario insert(Usuario obj) {
