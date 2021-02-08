@@ -5,16 +5,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
+
 public class Usuario implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
@@ -23,7 +26,11 @@ public class Usuario implements Serializable{
 	private Long id;
 	
 	private String nome;
+	
+	@Column(unique=true)
 	private String email;
+	
+	@Column(unique=true)
 	private String cpf;
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", timezone = "GMT")
