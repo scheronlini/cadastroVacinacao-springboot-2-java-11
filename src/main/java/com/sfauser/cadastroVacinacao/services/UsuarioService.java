@@ -41,7 +41,7 @@ public class UsuarioService {
 				|| userObj1.getDataNascimento() == null) {
 			throw new DatabaseException("Não foram preenchidos todos os campos do cadastro");
 		} else {
-			if (TestadorCPF.isCPF(userObj1.getCpf()) == false) {
+			if (ValidaCPF.isCPF(userObj1.getCpf()) == false) {
 				throw new DatabaseException("CPF Invalido");
 			}
 		}
@@ -75,12 +75,13 @@ public class UsuarioService {
 		if (userObj.getEmail() != null) {
 			databaseObj.setEmail(userObj.getEmail());
 		}
-		if (userObj.getCpf() != null && TestadorCPF.isCPF(userObj.getCpf()) != false) {
+		if (userObj.getCpf() != null && ValidaCPF.isCPF(userObj.getCpf()) != false) {
 			databaseObj.setCpf(userObj.getCpf());
 		}
-		if (TestadorCPF.isCPF(userObj.getCpf()) == false) {
-			throw new DatabaseException("CPF Invalido");
+		if (userObj.getCpf() != null && ValidaCPF.isCPF(userObj.getCpf()) == false) {
+			throw new DatabaseException("CPF invalido");
 		}
+		
 
 		if (userObj.getDataNascimento() != null) {
 			databaseObj.setDataNascimento(userObj.getDataNascimento());

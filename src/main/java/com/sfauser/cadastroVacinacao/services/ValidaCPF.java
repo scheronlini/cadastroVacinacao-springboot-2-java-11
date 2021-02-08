@@ -2,7 +2,7 @@ package com.sfauser.cadastroVacinacao.services;
 
 import java.util.InputMismatchException;
 
-public class TestadorCPF {
+public class ValidaCPF {
 	
 	public static boolean isCPF(String CPF) {
         // considera-se erro CPF's formados por uma sequencia de numeros iguais
