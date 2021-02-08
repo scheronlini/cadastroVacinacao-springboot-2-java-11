@@ -43,7 +43,11 @@ public class UsuarioService {
 		} else {
 			if (ValidaCPF.isCPF(userObj1.getCpf()) == false) {
 				throw new DatabaseException("CPF Invalido");
-			}
+			}else {
+				if (ValidaEmail.isValidEmailAddressRegex(userObj1.getEmail()) == false) {
+					throw new DatabaseException("E-mail Invalido");
+		}
+	}
 		}
 	}
 
@@ -72,8 +76,11 @@ public class UsuarioService {
 		if (userObj.getNome() != null) {
 			databaseObj.setNome(userObj.getNome());
 		}
-		if (userObj.getEmail() != null) {
+		if (userObj.getEmail() != null && ValidaEmail.isValidEmailAddressRegex(userObj.getEmail())!= false) {
 			databaseObj.setEmail(userObj.getEmail());
+		}
+		if (userObj.getEmail() != null && ValidaEmail.isValidEmailAddressRegex(userObj.getEmail()) == false) {
+			throw new DatabaseException("E-mail invalido");
 		}
 		if (userObj.getCpf() != null && ValidaCPF.isCPF(userObj.getCpf()) != false) {
 			databaseObj.setCpf(userObj.getCpf());
@@ -82,7 +89,6 @@ public class UsuarioService {
 			throw new DatabaseException("CPF invalido");
 		}
 		
-
 		if (userObj.getDataNascimento() != null) {
 			databaseObj.setDataNascimento(userObj.getDataNascimento());
 		}
