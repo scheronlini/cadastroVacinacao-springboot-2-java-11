@@ -30,8 +30,21 @@ public class UsuarioService {
 		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 
-	public Usuario insert(Usuario obj) {
-		return repository.save(obj);
+	public Usuario insert(Usuario userObj1) {
+		updateData1(userObj1);
+		return repository.save(userObj1);
+	}
+
+	private void updateData1(Usuario userObj1) {
+
+		if (userObj1.getNome() == null || userObj1.getEmail() == null || userObj1.getCpf() == null
+				|| userObj1.getDataNascimento() == null) {
+			throw new DatabaseException("Não foram preenchidos todos os campos do cadastro");
+		} else {
+			if (TestadorCPF.isCPF(userObj1.getCpf()) == false) {
+				throw new DatabaseException("CPF Invalido");
+			}
+		}
 	}
 
 	public void delete(Long id) {
@@ -62,9 +75,13 @@ public class UsuarioService {
 		if (userObj.getEmail() != null) {
 			databaseObj.setEmail(userObj.getEmail());
 		}
-		if (userObj.getCpf() != null) {
+		if (userObj.getCpf() != null && TestadorCPF.isCPF(userObj.getCpf()) != false) {
 			databaseObj.setCpf(userObj.getCpf());
 		}
+		if (TestadorCPF.isCPF(userObj.getCpf()) == false) {
+			throw new DatabaseException("CPF Invalido");
+		}
+
 		if (userObj.getDataNascimento() != null) {
 			databaseObj.setDataNascimento(userObj.getDataNascimento());
 		}
