@@ -16,7 +16,7 @@ import com.sfauser.cadastroVacinacao.services.exceptions.DatabaseException;
 import com.sfauser.cadastroVacinacao.services.exceptions.ResourceNotFoundException;
 
 @Service
-public class UsuarioService {
+public class PacienteService {
 
 	@Autowired
 	private PacienteRepository repository;

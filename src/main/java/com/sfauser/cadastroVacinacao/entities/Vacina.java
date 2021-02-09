@@ -34,6 +34,7 @@ public class Vacina implements Serializable {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", timezone = "GMT")
 	private Date dataVacina;
 	
+	@JsonIgnore
 	@ManyToMany(mappedBy = "vacinas")
 	private Set<Paciente> pacientes = new HashSet<>();
 

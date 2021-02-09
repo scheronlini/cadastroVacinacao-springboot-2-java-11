@@ -16,15 +16,15 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.sfauser.cadastroVacinacao.entities.Paciente;
-import com.sfauser.cadastroVacinacao.services.UsuarioService;
+import com.sfauser.cadastroVacinacao.services.PacienteService;
 
 
 @RestController
-@RequestMapping(value = "/usuarios")
-public class UsuarioResource {
+@RequestMapping(value = "/pacientes")
+public class PacienteResource {
 	
 	@Autowired
-	private UsuarioService service;
+	private PacienteService service;
 	
 	@GetMapping
 	public ResponseEntity<List<Paciente>> findAll() {
