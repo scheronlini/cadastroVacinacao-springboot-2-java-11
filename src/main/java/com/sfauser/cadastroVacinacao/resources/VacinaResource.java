@@ -11,31 +11,29 @@ import com.sfauser.cadastroVacinacao.entities.Vacina;
 import com.sfauser.cadastroVacinacao.services.VacinaService;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-
 @RestController
 @RequestMapping(value = "/vacinas")
 public class VacinaResource {
-	
+
 	@Autowired
 	private VacinaService service;
-	
+
 	@GetMapping
 	public ResponseEntity<List<Vacina>> findAll() {
-	List<Vacina> list = service.FindAll();
-	return ResponseEntity.ok().body(list);
+		List<Vacina> list = service.FindAll();
+		return ResponseEntity.ok().body(list);
 	}
-	
+
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Vacina> findById(@PathVariable Long id) {
-	Vacina obj = service.FindById(id);
-	return ResponseEntity.ok().body(obj);
+		Vacina obj = service.FindById(id);
+		return ResponseEntity.ok().body(obj);
 	}
 
 	@PostMapping
 	public ResponseEntity<Vacina> insert(@RequestBody Vacina vac) {
 		vac = service.insert(vac);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(vac.getId()).toUri();
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(vac.getId()).toUri();
 		return ResponseEntity.created(uri).body(vac);
 	}
 
@@ -51,4 +49,3 @@ public class VacinaResource {
 		return ResponseEntity.ok().body(vac);
 	}
 }
-

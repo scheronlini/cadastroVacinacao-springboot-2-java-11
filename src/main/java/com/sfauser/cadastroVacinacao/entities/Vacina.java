@@ -18,38 +18,35 @@ import javax.persistence.Transient;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-
 @Entity
-@Table (name="tb_vacina")
+@Table(name = "tb_vacina")
 public class Vacina implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	private String nomeVacina;
 	private String email;
-	
+
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", timezone = "GMT")
 	private Date dataVacina;
-	
+
 	@JsonIgnore
 	@ManyToMany(mappedBy = "vacinas")
 	private Set<Paciente> pacientes = new HashSet<>();
 
-		public Vacina() {
+	public Vacina() {
 	}
 
-	
 	public Vacina(Long id, String nomeVacina, String email, Date dataVacina) {
-			super();
-			this.id = id;
-			this.nomeVacina = nomeVacina;
-			this.email = email;
-			this.dataVacina = dataVacina;
-		}
-
+		super();
+		this.id = id;
+		this.nomeVacina = nomeVacina;
+		this.email = email;
+		this.dataVacina = dataVacina;
+	}
 
 	public Long getId() {
 		return id;
@@ -86,8 +83,6 @@ public class Vacina implements Serializable {
 	public Set<Paciente> getPaciente() {
 		return pacientes;
 	}
-
-	
 
 	@Override
 	public int hashCode() {

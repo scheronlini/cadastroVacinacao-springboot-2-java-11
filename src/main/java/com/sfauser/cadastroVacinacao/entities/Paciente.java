@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_paciente")
@@ -38,6 +39,7 @@ public class Paciente implements Serializable {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", timezone = "GMT")
 	private Date dataNascimento;
 
+	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "tb_paciente_vacina", joinColumns = @JoinColumn(name = "paciente_id"), inverseJoinColumns = @JoinColumn(name = "vacina_email"))
 	private Set<Vacina> vacinas = new HashSet<>();

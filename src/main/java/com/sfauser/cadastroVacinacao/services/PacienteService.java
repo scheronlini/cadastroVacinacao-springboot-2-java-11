@@ -11,9 +11,14 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.sfauser.cadastroVacinacao.entities.Paciente;
+import com.sfauser.cadastroVacinacao.entities.Vacina;
 import com.sfauser.cadastroVacinacao.repositories.PacienteRepository;
 import com.sfauser.cadastroVacinacao.services.exceptions.DatabaseException;
 import com.sfauser.cadastroVacinacao.services.exceptions.ResourceNotFoundException;
+
+import util.ValidaCPF;
+import util.ValidaEmail;
+import util.ValidaNome;
 
 @Service
 public class PacienteService {
@@ -31,24 +36,30 @@ public class PacienteService {
 	}
 
 	public Paciente insert(Paciente userObj1) {
-		updateData1(userObj1);
-		return repository.save(userObj1);
+		try {
+			insertData(userObj1);
+			return repository.save(userObj1);
+
+		} catch (DataIntegrityViolationException o) {
+			throw new DatabaseException("E-mail ou CPF já foram cadastrados para outro paciente");
+		}
 	}
 
-	private void updateData1(Paciente userObj1) {
 
-			if (userObj1.getNome() == null || userObj1.getEmail() == null || userObj1.getCpf() == null
-					|| userObj1.getDataNascimento() == null) {
-				throw new DatabaseException("Não foram preenchidos todos os campos do cadastro");
+	private void insertData(Paciente userObj1) {
+
+		if (userObj1.getNome() == null || userObj1.getEmail() == null || userObj1.getCpf() == null
+				|| userObj1.getDataNascimento() == null) {
+			throw new DatabaseException("Não foram preenchidos todos os campos do cadastro");
+		} else {
+			if (ValidaCPF.isCPF(userObj1.getCpf()) == false) {
+				throw new DatabaseException("CPF Invalido");
 			} else {
-				if (ValidaCPF.isCPF(userObj1.getCpf()) == false) {
-					throw new DatabaseException("CPF Invalido");
+				if (ValidaEmail.isValidEmailAddressRegex(userObj1.getEmail()) == false) {
+					throw new DatabaseException("E-mail Invalido");
 				} else {
-					if (ValidaEmail.isValidEmailAddressRegex(userObj1.getEmail()) == false) {
-						throw new DatabaseException("E-mail Invalido");
-					} else {
-						if (ValidaNome.isNome(userObj1.getNome()) == false) {
-							throw new DatabaseException("Nome Invalido");
+					if (ValidaNome.isNome(userObj1.getNome()) == false) {
+						throw new DatabaseException("Nome Invalido");
 					}
 				}
 			}
@@ -76,29 +87,28 @@ public class PacienteService {
 	}
 
 	private void updateData(Paciente databaseObj, Paciente userObj) {
-		
-			if (userObj.getNome() != null && ValidaNome.isNome(userObj.getNome()) != false) {
-				databaseObj.setNome(userObj.getNome());
-			}
-			if (userObj.getNome() != null && ValidaNome.isNome(userObj.getNome()) == false) {
-				throw new DatabaseException("Nome invalido");
-			}
-			if (userObj.getEmail() != null && ValidaEmail.isValidEmailAddressRegex(userObj.getEmail()) != false) {
-				databaseObj.setEmail(userObj.getEmail());
-			}
-			if (userObj.getEmail() != null && ValidaEmail.isValidEmailAddressRegex(userObj.getEmail()) == false) {
-				throw new DatabaseException("E-mail invalido");
-			}
-			if (userObj.getCpf() != null && ValidaCPF.isCPF(userObj.getCpf()) != false) {
-				databaseObj.setCpf(userObj.getCpf());
-			}
-			if (userObj.getCpf() != null && ValidaCPF.isCPF(userObj.getCpf()) == false) {
-				throw new DatabaseException("CPF invalido");
-			}
 
-			if (userObj.getDataNascimento() != null) {
-				databaseObj.setDataNascimento(userObj.getDataNascimento());
-			}
+		if (userObj.getNome() != null && ValidaNome.isNome(userObj.getNome()) != false) {
+			databaseObj.setNome(userObj.getNome());
+		}
+		if (userObj.getNome() != null && ValidaNome.isNome(userObj.getNome()) == false) {
+			throw new DatabaseException("Nome invalido");
+		}
+		if (userObj.getEmail() != null && ValidaEmail.isValidEmailAddressRegex(userObj.getEmail()) != false) {
+			databaseObj.setEmail(userObj.getEmail());
+		}
+		if (userObj.getEmail() != null && ValidaEmail.isValidEmailAddressRegex(userObj.getEmail()) == false) {
+			throw new DatabaseException("E-mail invalido");
+		}
+		if (userObj.getCpf() != null && ValidaCPF.isCPF(userObj.getCpf()) != false) {
+			databaseObj.setCpf(userObj.getCpf());
+		}
+		if (userObj.getCpf() != null && ValidaCPF.isCPF(userObj.getCpf()) == false) {
+			throw new DatabaseException("CPF invalido");
+		}
+
+		if (userObj.getDataNascimento() != null) {
+			databaseObj.setDataNascimento(userObj.getDataNascimento());
 		}
 	}
-
+}

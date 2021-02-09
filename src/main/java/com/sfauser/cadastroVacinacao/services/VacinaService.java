@@ -5,11 +5,16 @@ import java.util.Optional;
 
 import com.sfauser.cadastroVacinacao.services.exceptions.DatabaseException;
 import com.sfauser.cadastroVacinacao.services.exceptions.ResourceNotFoundException;
+
+import util.ValidaEmail;
+import util.ValidaNome;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.sfauser.cadastroVacinacao.entities.Paciente;
 import com.sfauser.cadastroVacinacao.entities.Vacina;
 import com.sfauser.cadastroVacinacao.repositories.VacinaRepository;
 
@@ -17,21 +22,32 @@ import javax.persistence.EntityNotFoundException;
 
 @Service
 public class VacinaService {
-	
+
 	@Autowired
 	private VacinaRepository repository;
-	
+
 	public List<Vacina> FindAll() {
 		return repository.findAll();
 	}
-	
+
 	public Vacina FindById(Long id) {
 		Optional<Vacina> obj = repository.findById(id);
-		return obj.get();
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
+	}
+		
+	public Vacina insert(Vacina userObj) {
+		try {
+			insertData(userObj);
+			return repository.save(userObj);
+		} catch (DataIntegrityViolationException o) {
+			throw new DatabaseException(o.getMessage());
+		}
 	}
 
-	public Vacina insert(Vacina vac) {
-		return repository.save(vac);
+	private void insertData(Vacina userObj) {
+		if (ValidaEmail.isValidEmailAddressRegex(userObj.getEmail()) == false) {
+			throw new DatabaseException("E-mail Invalido");
+		}
 	}
 
 	public void delete(Long id) {
@@ -54,17 +70,14 @@ public class VacinaService {
 		}
 	}
 
-	private void updateData(Vacina databasevac, Vacina vac) {
-		if (vac.getNomeVacina() != null && ValidaNome.isNome(vac.getNomeVacina()) != false) {
-			databasevac.setNomeVacina(vac.getNomeVacina());
+	private void updateData(Vacina databasevac, Vacina userobj) {
+		if (userobj.getNomeVacina() != null ){
+			databasevac.setNomeVacina(userobj.getNomeVacina());
 		}
-		if (vac.getNomeVacina() != null && ValidaNome.isNome(vac.getNomeVacina()) == false) {
-			throw new DatabaseException("Nome invalido");
+		if (userobj.getEmail() != null && ValidaEmail.isValidEmailAddressRegex(userobj.getEmail()) != false) {
+			databasevac.setEmail(userobj.getEmail());
 		}
-		if (vac.getEmail() != null && ValidaEmail.isValidEmailAddressRegex(vac.getEmail()) != false) {
-			databasevac.setEmail(vac.getEmail());
-		}
-		if (vac.getEmail() != null && ValidaEmail.isValidEmailAddressRegex(vac.getEmail()) == false) {
+		if (userobj.getEmail() != null && ValidaEmail.isValidEmailAddressRegex(userobj.getEmail()) == false) {
 			throw new DatabaseException("E-mail invalido");
 		}
 	}
