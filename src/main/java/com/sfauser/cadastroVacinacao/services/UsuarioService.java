@@ -10,8 +10,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import com.sfauser.cadastroVacinacao.entities.Usuario;
-import com.sfauser.cadastroVacinacao.repositories.UsuarioRepository;
+import com.sfauser.cadastroVacinacao.entities.Paciente;
+import com.sfauser.cadastroVacinacao.repositories.PacienteRepository;
 import com.sfauser.cadastroVacinacao.services.exceptions.DatabaseException;
 import com.sfauser.cadastroVacinacao.services.exceptions.ResourceNotFoundException;
 
@@ -19,23 +19,23 @@ import com.sfauser.cadastroVacinacao.services.exceptions.ResourceNotFoundExcepti
 public class UsuarioService {
 
 	@Autowired
-	private UsuarioRepository repository;
+	private PacienteRepository repository;
 
-	public List<Usuario> FindAll() {
+	public List<Paciente> FindAll() {
 		return repository.findAll();
 	}
 
-	public Usuario FindById(Long id) {
-		Optional<Usuario> obj = repository.findById(id);
+	public Paciente FindById(Long id) {
+		Optional<Paciente> obj = repository.findById(id);
 		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 
-	public Usuario insert(Usuario userObj1) {
+	public Paciente insert(Paciente userObj1) {
 		updateData1(userObj1);
 		return repository.save(userObj1);
 	}
 
-	private void updateData1(Usuario userObj1) {
+	private void updateData1(Paciente userObj1) {
 
 			if (userObj1.getNome() == null || userObj1.getEmail() == null || userObj1.getCpf() == null
 					|| userObj1.getDataNascimento() == null) {
@@ -65,9 +65,9 @@ public class UsuarioService {
 		}
 	}
 
-	public Usuario update(Long id, Usuario userObj) {
+	public Paciente update(Long id, Paciente userObj) {
 		try {
-			Usuario databaseObj = repository.getOne(id);
+			Paciente databaseObj = repository.getOne(id);
 			updateData(databaseObj, userObj);
 			return repository.save(databaseObj);
 		} catch (EntityNotFoundException e) {
@@ -75,7 +75,7 @@ public class UsuarioService {
 		}
 	}
 
-	private void updateData(Usuario databaseObj, Usuario userObj) {
+	private void updateData(Paciente databaseObj, Paciente userObj) {
 		
 			if (userObj.getNome() != null && ValidaNome.isNome(userObj.getNome()) != false) {
 				databaseObj.setNome(userObj.getNome());

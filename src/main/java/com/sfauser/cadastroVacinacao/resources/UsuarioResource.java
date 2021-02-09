@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.sfauser.cadastroVacinacao.entities.Usuario;
+import com.sfauser.cadastroVacinacao.entities.Paciente;
 import com.sfauser.cadastroVacinacao.services.UsuarioService;
 
 
@@ -27,19 +27,19 @@ public class UsuarioResource {
 	private UsuarioService service;
 	
 	@GetMapping
-	public ResponseEntity<List<Usuario>> findAll() {
-	List<Usuario> list = service.FindAll();
+	public ResponseEntity<List<Paciente>> findAll() {
+	List<Paciente> list = service.FindAll();
 	return ResponseEntity.ok().body(list);
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Usuario> findById(@PathVariable Long id) {
-	Usuario obj = service.FindById(id);
+	public ResponseEntity<Paciente> findById(@PathVariable Long id) {
+	Paciente obj = service.FindById(id);
 	return ResponseEntity.ok().body(obj);
 	}
 	
 	@PostMapping
-	public ResponseEntity<Usuario> insert(@RequestBody Usuario obj) {
+	public ResponseEntity<Paciente> insert(@RequestBody Paciente obj) {
 	obj = service.insert(obj);
 	URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 			.buildAndExpand(obj.getId()).toUri();
@@ -53,7 +53,7 @@ public class UsuarioResource {
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Usuario> update(@PathVariable Long id, @RequestBody Usuario obj) {
+	public ResponseEntity<Paciente> update(@PathVariable Long id, @RequestBody Paciente obj) {
 	obj = service.update(id, obj);
 	return ResponseEntity.ok().body(obj);
 	}

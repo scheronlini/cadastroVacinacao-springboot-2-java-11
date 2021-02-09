@@ -1,49 +1,51 @@
 package com.sfauser.cadastroVacinacao.entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-
-public class Usuario implements Serializable{
+@Table(name = "tb_paciente")
+public class Paciente implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	private String nome;
-	
-	@Column(unique=true)
+
+	@Column(unique = true)
 	private String email;
-	
-	@Column(unique=true)
+
+	@Column(unique = true)
 	private String cpf;
-	
+
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", timezone = "GMT")
 	private Date dataNascimento;
-	
-	@JsonIgnore
-	@OneToMany(mappedBy = "paciente")
-	private List<Vacina> vacinas = new ArrayList<>();
-	
-	public Usuario() {
+
+	@ManyToMany
+	@JoinTable(name = "tb_paciente_vacina", joinColumns = @JoinColumn(name = "paciente_id"), inverseJoinColumns = @JoinColumn(name = "vacina_email"))
+	private Set<Vacina> vacinas = new HashSet<>();
+
+	public Paciente() {
 	}
-	
-	public Usuario(Long id, String nome, String email, String cpf, Date dataNascimento) {
+
+	public Paciente(Long id, String nome, String email, String cpf, Date dataNascimento) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -87,8 +89,8 @@ public class Usuario implements Serializable{
 	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
-	
-	public List<Vacina> getVacinas() {
+
+	public Set<Vacina> getVacinas() {
 		return vacinas;
 	}
 
@@ -109,7 +111,7 @@ public class Usuario implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Usuario other = (Usuario) obj;
+		Paciente other = (Paciente) obj;
 		if (cpf == null) {
 			if (other.cpf != null)
 				return false;

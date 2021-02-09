@@ -2,18 +2,24 @@ package com.sfauser.cadastroVacinacao.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 
 @Entity
+@Table (name="tb_vacina")
 public class Vacina implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
@@ -27,22 +33,21 @@ public class Vacina implements Serializable {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", timezone = "GMT")
 	private Date dataVacina;
 	
-	
-	@ManyToOne
-	@JoinColumn(name = "paciente_id")
-	private Usuario paciente;
-	
-	public Vacina() {
+	@ManyToMany(mappedBy = "vacinas")
+	private Set<Paciente> pacientes = new HashSet<>();
+
+		public Vacina() {
 	}
 
-	public Vacina(Long id, String nomeVacina, String email, Date dataVacina, Usuario paciente) {
-		super();
-		this.id = id;
-		this.nomeVacina = nomeVacina;
-		this.email = email;
-		this.dataVacina = dataVacina;
-		this.paciente = paciente;
-	}
+	
+	public Vacina(Long id, String nomeVacina, String email, Date dataVacina) {
+			super();
+			this.id = id;
+			this.nomeVacina = nomeVacina;
+			this.email = email;
+			this.dataVacina = dataVacina;
+		}
+
 
 	public Long getId() {
 		return id;
@@ -76,13 +81,11 @@ public class Vacina implements Serializable {
 		this.dataVacina = dataVacina;
 	}
 
-	public Usuario getPaciente() {
-		return paciente;
+	public Paciente getPaciente() {
+		return getPaciente();
 	}
 
-	public void setPaciente(Usuario paciente) {
-		this.paciente = paciente;
-	}
+	
 
 	@Override
 	public int hashCode() {
