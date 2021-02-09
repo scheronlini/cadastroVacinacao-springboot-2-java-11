@@ -37,22 +37,22 @@ public class UsuarioService {
 
 	private void updateData1(Usuario userObj1) {
 
-		if (userObj1.getNome() == null || userObj1.getEmail() == null || userObj1.getCpf() == null
-				|| userObj1.getDataNascimento() == null) {
-			throw new DatabaseException("Não foram preenchidos todos os campos do cadastro");
-		} else {
-			if (ValidaCPF.isCPF(userObj1.getCpf()) == false) {
-				throw new DatabaseException("CPF Invalido");
+			if (userObj1.getNome() == null || userObj1.getEmail() == null || userObj1.getCpf() == null
+					|| userObj1.getDataNascimento() == null) {
+				throw new DatabaseException("Não foram preenchidos todos os campos do cadastro");
 			} else {
-				if (ValidaEmail.isValidEmailAddressRegex(userObj1.getEmail()) == false) {
-					throw new DatabaseException("E-mail Invalido");
+				if (ValidaCPF.isCPF(userObj1.getCpf()) == false) {
+					throw new DatabaseException("CPF Invalido");
 				} else {
-					if (ValidaNome.isNome(userObj1.getNome()) == false) {
-						throw new DatabaseException("Nome Invalido");
+					if (ValidaEmail.isValidEmailAddressRegex(userObj1.getEmail()) == false) {
+						throw new DatabaseException("E-mail Invalido");
+					} else {
+						if (ValidaNome.isNome(userObj1.getNome()) == false) {
+							throw new DatabaseException("Nome Invalido");
 					}
+				}
 			}
 		}
-	}
 	}
 
 	public void delete(Long id) {
@@ -76,32 +76,29 @@ public class UsuarioService {
 	}
 
 	private void updateData(Usuario databaseObj, Usuario userObj) {
-
 		
-		
-		if (userObj.getNome() != null && ValidaNome.isNome(userObj.getNome()) != false) {
-			databaseObj.setNome(userObj.getNome());
-		}
-		if (userObj.getNome() != null && ValidaNome.isNome(userObj.getNome()) == false) {
-			throw new DatabaseException("Nome invalido");
-		}
-		if (userObj.getEmail() != null && ValidaEmail.isValidEmailAddressRegex(userObj.getEmail()) != false) {
-			databaseObj.setEmail(userObj.getEmail());
-		}
-		if (userObj.getEmail() != null && ValidaEmail.isValidEmailAddressRegex(userObj.getEmail()) == false) {
-			throw new DatabaseException("E-mail invalido");
-		}
-		if (userObj.getCpf() != null && ValidaCPF.isCPF(userObj.getCpf()) != false) {
-			databaseObj.setCpf(userObj.getCpf());
-		}
-		if (userObj.getCpf() != null && ValidaCPF.isCPF(userObj.getCpf()) == false) {
-			throw new DatabaseException("CPF invalido");
-		}
+			if (userObj.getNome() != null && ValidaNome.isNome(userObj.getNome()) != false) {
+				databaseObj.setNome(userObj.getNome());
+			}
+			if (userObj.getNome() != null && ValidaNome.isNome(userObj.getNome()) == false) {
+				throw new DatabaseException("Nome invalido");
+			}
+			if (userObj.getEmail() != null && ValidaEmail.isValidEmailAddressRegex(userObj.getEmail()) != false) {
+				databaseObj.setEmail(userObj.getEmail());
+			}
+			if (userObj.getEmail() != null && ValidaEmail.isValidEmailAddressRegex(userObj.getEmail()) == false) {
+				throw new DatabaseException("E-mail invalido");
+			}
+			if (userObj.getCpf() != null && ValidaCPF.isCPF(userObj.getCpf()) != false) {
+				databaseObj.setCpf(userObj.getCpf());
+			}
+			if (userObj.getCpf() != null && ValidaCPF.isCPF(userObj.getCpf()) == false) {
+				throw new DatabaseException("CPF invalido");
+			}
 
-		if (userObj.getDataNascimento() != null) {
-			databaseObj.setDataNascimento(userObj.getDataNascimento());
-		}
-	
+			if (userObj.getDataNascimento() != null) {
+				databaseObj.setDataNascimento(userObj.getDataNascimento());
+			}
 		}
 	}
 
