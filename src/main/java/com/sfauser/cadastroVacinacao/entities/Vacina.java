@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity
@@ -81,8 +82,8 @@ public class Vacina implements Serializable {
 		this.dataVacina = dataVacina;
 	}
 
-	public Paciente getPaciente() {
-		return getPaciente();
+	public Set<Paciente> getPaciente() {
+		return pacientes;
 	}
 
 	

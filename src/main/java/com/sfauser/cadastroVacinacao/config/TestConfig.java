@@ -41,8 +41,7 @@ public class TestConfig implements CommandLineRunner {
 
 		usuarioRepository.saveAll(Arrays.asList(a, b, c));
 		vacinaRepository.saveAll(Arrays.asList(o, s, w));
-		a.getVacinas().add(o);
-		b.getVacinas().add(o);
+		
 	}
 
 }
