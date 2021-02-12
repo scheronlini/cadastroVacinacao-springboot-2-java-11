@@ -1,4 +1,4 @@
-package com.sfauser.cadastroVacinacao.resources.Exceptions;
+package com.sfauser.cadastroVacinacao.resources.exceptions;
 
 import java.time.Instant;
 

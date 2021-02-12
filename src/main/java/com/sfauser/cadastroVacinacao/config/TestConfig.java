@@ -35,18 +35,18 @@ public class TestConfig implements CommandLineRunner {
 		Paciente b = new Paciente(null, "maria", "maria@gmail.com", "044.877.888-09", sdf.parse("30/10/2010"));
 		Paciente c = new Paciente(null, "ricardo", "ricardo@gmail.com", "888.386.999-03", sdf.parse("20/03/2010"));
 
-		Vacina o = new Vacina(null, "coronavac", "secretaria@butantan.gov.br", sdf.parse("30/10/2010"));
-		Vacina s = new Vacina(null, "H1N1", "secretaria@medley.com", sdf.parse("30/10/2010"));
-		Vacina w = new Vacina(null, "TETANO", "secretaria@ache.com.br", sdf.parse("30/10/2010"));
+		Vacina o = new Vacina(null, "coronavac", "joao@gmail.com", sdf.parse("30/10/2010"));
+		Vacina s = new Vacina(null, "H1N1", "maria@gmail.com", sdf.parse("30/10/2010"));
+		Vacina w = new Vacina(null, "TETANO", "ricardo@gmail.com", sdf.parse("30/10/2010"));
 
 		pacienteRepository.saveAll(Arrays.asList(a, b, c));
 		vacinaRepository.saveAll(Arrays.asList(o, s, w));
 
 		a.getVacinas().add(o);
-		a.getVacinas().add(o);
 		a.getVacinas().add(s);
 		a.getVacinas().add(w);
+		b.getVacinas().add(w);
 
-		pacienteRepository.saveAll(Arrays.asList(a));
+		pacienteRepository.saveAll(Arrays.asList(a,b));
 	}
 }

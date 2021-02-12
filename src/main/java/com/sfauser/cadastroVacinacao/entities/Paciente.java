@@ -41,7 +41,8 @@ public class Paciente implements Serializable {
 
 	@JsonIgnore
 	@ManyToMany
-	@JoinTable(name = "tb_paciente_vacina", joinColumns = @JoinColumn(name = "paciente_id"), inverseJoinColumns = @JoinColumn(name = "vacina_email"))
+	@JoinTable(name = "tb_paciente_vacina", joinColumns = @JoinColumn(name = "paciente_id"),
+	inverseJoinColumns = @JoinColumn(name = "vacina_email"))
 	private Set<Vacina> vacinas = new HashSet<>();
 
 	public Paciente() {
