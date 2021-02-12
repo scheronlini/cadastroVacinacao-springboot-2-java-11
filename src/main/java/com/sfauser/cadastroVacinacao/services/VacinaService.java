@@ -34,19 +34,22 @@ public class VacinaService {
 		Optional<Vacina> obj = repository.findById(id);
 		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
-		
+
 	public Vacina insert(Vacina userObj) {
 		try {
 			insertData(userObj);
 			return repository.save(userObj);
 		} catch (DataIntegrityViolationException o) {
-			throw new DatabaseException(o.getMessage());
+			throw new DatabaseException("E-mail ja foi cadastrado para outra vacina");
 		}
 	}
 
 	private void insertData(Vacina userObj) {
 		if (ValidaEmail.isValidEmailAddressRegex(userObj.getEmail()) == false) {
 			throw new DatabaseException("E-mail Invalido");
+		}
+		if (userObj.getNomeVacina() == null || userObj.getEmail() == null || userObj.getDataVacina() == null) {
+			throw new DatabaseException("Não foram preenchidos todos os campos do cadastro");
 		}
 	}
 
@@ -60,25 +63,28 @@ public class VacinaService {
 		}
 	}
 
-	public Vacina update(Long id, Vacina vac) {
+	public Vacina update(Long id, Vacina userObj) {
 		try {
-			Vacina entity = repository.getOne(id);
-			updateData(entity, vac);
-			return repository.save(entity);
+			Vacina dataBaseObj = repository.getOne(id);
+			updateData(dataBaseObj, userObj);
+			return repository.save(dataBaseObj);
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException(id);
 		}
 	}
 
-	private void updateData(Vacina databasevac, Vacina userobj) {
-		if (userobj.getNomeVacina() != null ){
-			databasevac.setNomeVacina(userobj.getNomeVacina());
+	private void updateData(Vacina databaseObj, Vacina userObj) {
+		if (userObj.getNomeVacina() != null) {
+			databaseObj.setNomeVacina(userObj.getNomeVacina());
 		}
-		if (userobj.getEmail() != null && ValidaEmail.isValidEmailAddressRegex(userobj.getEmail()) != false) {
-			databasevac.setEmail(userobj.getEmail());
+		if (userObj.getEmail() != null && ValidaEmail.isValidEmailAddressRegex(userObj.getEmail()) != false) {
+			databaseObj.setEmail(userObj.getEmail());
 		}
-		if (userobj.getEmail() != null && ValidaEmail.isValidEmailAddressRegex(userobj.getEmail()) == false) {
+		if (userObj.getEmail() != null && ValidaEmail.isValidEmailAddressRegex(userObj.getEmail()) == false) {
 			throw new DatabaseException("E-mail invalido");
+		}
+		if (userObj.getDataVacina() != null) {
+			databaseObj.setDataVacina(userObj.getDataVacina());
 		}
 	}
 }
