@@ -11,7 +11,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.sfauser.cadastroVacinacao.entities.Paciente;
-import com.sfauser.cadastroVacinacao.entities.Vacina;
+import com.sfauser.cadastroVacinacao.entities.AplicacaoVacina;
 import com.sfauser.cadastroVacinacao.repositories.PacienteRepository;
 import com.sfauser.cadastroVacinacao.services.exceptions.DatabaseException;
 import com.sfauser.cadastroVacinacao.services.exceptions.ResourceNotFoundException;

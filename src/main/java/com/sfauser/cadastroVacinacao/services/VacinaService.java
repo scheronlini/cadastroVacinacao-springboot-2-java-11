@@ -15,8 +15,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.sfauser.cadastroVacinacao.entities.Paciente;
-import com.sfauser.cadastroVacinacao.entities.Vacina;
-import com.sfauser.cadastroVacinacao.repositories.VacinaRepository;
+import com.sfauser.cadastroVacinacao.entities.AplicacaoVacina;
+import com.sfauser.cadastroVacinacao.repositories.AplicacaoVacinaRepository;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -24,36 +24,26 @@ import javax.persistence.EntityNotFoundException;
 public class VacinaService {
 
 	@Autowired
-	private VacinaRepository repository;
+	private AplicacaoVacinaRepository repository;
 
-	public List<Vacina> FindAll() {
+	public List<AplicacaoVacina> FindAll() {
 		return repository.findAll();
 	}
 
-	public Vacina FindById(Long id) {
-		Optional<Vacina> obj = repository.findById(id);
+	public AplicacaoVacina FindById(Long id) {
+		Optional<AplicacaoVacina> obj = repository.findById(id);
 		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 
-	public Vacina insert(Vacina userObj) {
+	public AplicacaoVacina insert(AplicacaoVacina userObj) {
 		try {
-			insertData(userObj);
 			return repository.save(userObj);
 		} catch (DataIntegrityViolationException o) {
-			throw new DatabaseException("E-mail ja foi cadastrado para outra vacina");
+			throw new DatabaseException("E-mail ja foi cadastrado para aplicação outra vacina");
 		}
 	}
 
-	private void insertData(Vacina userObj) {
-		if (ValidaEmail.isValidEmailAddressRegex(userObj.getEmail()) == false) {
-			throw new DatabaseException("E-mail Invalido");
-		}
-		if (userObj.getNomeVacina() == null || userObj.getEmail() == null || userObj.getDataVacina() == null) {
-			throw new DatabaseException("Não foram preenchidos todos os campos do cadastro");
-		}
-	}
-
-	public void delete(Long id) {
+		public void delete(Long id) {
 		try {
 			repository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
@@ -63,9 +53,9 @@ public class VacinaService {
 		}
 	}
 
-	public Vacina update(Long id, Vacina userObj) {
+	public AplicacaoVacina update(Long id, AplicacaoVacina userObj) {
 		try {
-			Vacina dataBaseObj = repository.getOne(id);
+			AplicacaoVacina dataBaseObj = repository.getOne(id);
 			updateData(dataBaseObj, userObj);
 			return repository.save(dataBaseObj);
 		} catch (EntityNotFoundException e) {
@@ -73,18 +63,7 @@ public class VacinaService {
 		}
 	}
 
-	private void updateData(Vacina databaseObj, Vacina userObj) {
-		if (userObj.getNomeVacina() != null) {
-			databaseObj.setNomeVacina(userObj.getNomeVacina());
-		}
-		if (userObj.getEmail() != null && ValidaEmail.isValidEmailAddressRegex(userObj.getEmail()) != false) {
-			databaseObj.setEmail(userObj.getEmail());
-		}
-		if (userObj.getEmail() != null && ValidaEmail.isValidEmailAddressRegex(userObj.getEmail()) == false) {
-			throw new DatabaseException("E-mail invalido");
-		}
-		if (userObj.getDataVacina() != null) {
-			databaseObj.setDataVacina(userObj.getDataVacina());
-		}
+	private void updateData(AplicacaoVacina databaseObj, AplicacaoVacina userObj) {
+		
 	}
 }

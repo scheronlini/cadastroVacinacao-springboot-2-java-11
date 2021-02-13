@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -36,14 +38,12 @@ public class Paciente implements Serializable {
 	@Column(unique = true)
 	private String cpf;
 
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", timezone = "GMT")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", timezone="Brazil/East")
 	private Date dataNascimento;
 
 	@JsonIgnore
-	@ManyToMany
-	@JoinTable(name = "tb_paciente_vacina", joinColumns = @JoinColumn(name = "paciente_id"),
-	inverseJoinColumns = @JoinColumn(name = "vacina_email"))
-	private Set<Vacina> vacinas = new HashSet<>();
+	@OneToMany(mappedBy = "paciente")
+	private Set<AplicacaoVacina> vacinas = new HashSet<>();
 
 	public Paciente() {
 	}
@@ -93,7 +93,7 @@ public class Paciente implements Serializable {
 		this.dataNascimento = dataNascimento;
 	}
 
-	public Set<Vacina> getVacinas() {
+	public Set<AplicacaoVacina> getVacinas() {
 		return vacinas;
 	}
 

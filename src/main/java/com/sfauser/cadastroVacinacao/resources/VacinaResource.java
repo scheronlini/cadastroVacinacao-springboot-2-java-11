@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PostMapping;
-import com.sfauser.cadastroVacinacao.entities.Vacina;
+import com.sfauser.cadastroVacinacao.entities.AplicacaoVacina;
 import com.sfauser.cadastroVacinacao.services.VacinaService;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -19,22 +19,23 @@ public class VacinaResource {
 	private VacinaService service;
 
 	@GetMapping
-	public ResponseEntity<List<Vacina>> findAll() {
-		List<Vacina> list = service.FindAll();
+	public ResponseEntity<List<AplicacaoVacina>> findAll() {
+		List<AplicacaoVacina> list = service.FindAll();
 		return ResponseEntity.ok().body(list);
 	}
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Vacina> findById(@PathVariable Long id) {
-		Vacina obj = service.FindById(id);
+	public ResponseEntity<AplicacaoVacina> findById(@PathVariable Long id) {
+		AplicacaoVacina obj = service.FindById(id);
 		return ResponseEntity.ok().body(obj);
 	}
 
 	@PostMapping
-	public ResponseEntity<Vacina> insert(@RequestBody Vacina vac) {
-		vac = service.insert(vac);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(vac.getId()).toUri();
-		return ResponseEntity.created(uri).body(vac);
+	public ResponseEntity<AplicacaoVacina> insert(@RequestBody AplicacaoVacina obj) {
+		obj = service.insert(obj);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").
+		buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(uri).body(obj);
 	}
 
 	@DeleteMapping(value = "/{id}")
@@ -44,8 +45,8 @@ public class VacinaResource {
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Vacina> update(@PathVariable Long id, @RequestBody Vacina vac) {
-		vac = service.update(id, vac);
-		return ResponseEntity.ok().body(vac);
+	public ResponseEntity<AplicacaoVacina> update(@PathVariable Long id, @RequestBody AplicacaoVacina obj) {
+		obj = service.update(id, obj);
+		return ResponseEntity.ok().body(obj);
 	}
 }
