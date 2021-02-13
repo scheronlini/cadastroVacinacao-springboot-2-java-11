@@ -20,6 +20,7 @@ import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sun.istack.NotNull;
 
 @Entity
 @Table(name = "tb_paciente")
@@ -32,12 +33,15 @@ public class Paciente implements Serializable {
 
 	private String nome;
 
+	@NotNull
 	@Column(unique = true)
 	private String email;
 
+	@NotNull
 	@Column(unique = true)
 	private String cpf;
 
+	@NotNull
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", timezone="Brazil/East")
 	private Date dataNascimento;
 

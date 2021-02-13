@@ -26,14 +26,6 @@ public class PacienteService {
 	@Autowired
 	private PacienteRepository repository;
 
-	public List<Paciente> FindAll() {
-		return repository.findAll();
-	}
-
-	public Paciente FindById(Long id) {
-		Optional<Paciente> obj = repository.findById(id);
-		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
-	}
 
 	public Paciente insert(Paciente userObj1) {
 		try {
@@ -63,52 +55,6 @@ public class PacienteService {
 					}
 				}
 			}
-		}
-	}
-
-	public void delete(Long id) {
-		try {
-			repository.deleteById(id);
-		} catch (EmptyResultDataAccessException e) {
-			throw new ResourceNotFoundException(id);
-		} catch (DataIntegrityViolationException e) {
-			throw new DatabaseException(e.getMessage());
-		}
-	}
-
-	public Paciente update(Long id, Paciente userObj) {
-		try {
-			Paciente databaseObj = repository.getOne(id);
-			updateData(databaseObj, userObj);
-			return repository.save(databaseObj);
-		} catch (EntityNotFoundException e) {
-			throw new ResourceNotFoundException(id);
-		}
-	}
-
-	private void updateData(Paciente databaseObj, Paciente userObj) {
-
-		if (userObj.getNome() != null && ValidaNome.isNome(userObj.getNome()) != false) {
-			databaseObj.setNome(userObj.getNome());
-		}
-		if (userObj.getNome() != null && ValidaNome.isNome(userObj.getNome()) == false) {
-			throw new DatabaseException("Nome invalido");
-		}
-		if (userObj.getEmail() != null && ValidaEmail.isValidEmailAddressRegex(userObj.getEmail()) != false) {
-			databaseObj.setEmail(userObj.getEmail());
-		}
-		if (userObj.getEmail() != null && ValidaEmail.isValidEmailAddressRegex(userObj.getEmail()) == false) {
-			throw new DatabaseException("E-mail invalido");
-		}
-		if (userObj.getCpf() != null && ValidaCPF.isCPF(userObj.getCpf()) != false) {
-			databaseObj.setCpf(userObj.getCpf());
-		}
-		if (userObj.getCpf() != null && ValidaCPF.isCPF(userObj.getCpf()) == false) {
-			throw new DatabaseException("CPF invalido");
-		}
-
-		if (userObj.getDataNascimento() != null) {
-			databaseObj.setDataNascimento(userObj.getDataNascimento());
 		}
 	}
 }
